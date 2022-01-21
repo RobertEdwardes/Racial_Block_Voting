@@ -17,8 +17,11 @@ Short intro Work In Progress
 
 ### TODO 
 - [x] Vote Power Indexes
-- [] Binomial regression
-- [] Homogeneous Precinct Analysis
+
+- [] Bivariate Ecological Regression Analysis
+
+- [X] Homogeneous Precinct Analysis
+
 - [X] Simplify AL_PL94 dataset to be under 100MB
 
 
