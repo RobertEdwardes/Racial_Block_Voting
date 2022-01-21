@@ -5,4 +5,4 @@
 
 - [] QGIS plug-in
 
-- [] Explainer for Homogeneous Precinct Analysis
+- [] Explainer for Bivariate Ecological Regression Analysis
