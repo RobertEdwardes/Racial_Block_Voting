@@ -12,16 +12,25 @@ Voting and Election Science Team, 2020, "2020 Precinct-Level Election Results", 
 [Haravrd Datavser Precinct](https://dataverse.harvard.edu/dataverse/electionscience)
 
 ##### Why Not Ecological Inference
-Short intro Work In Progress
+Part of upcoming wiki
 [Ecological Inference Falicy](https://en.wikipedia.org/wiki/Ecological_fallacy)
 
 ### TODO 
-- [x] Vote Power Indexes
-
-- [] Bivariate Ecological Regression Analysis
-
-- [X] Homogeneous Precinct Analysis
+- [x] Notebooks
+    - [x] Vote Power Indexes
+    - [X] Bivariate Ecological Regression Analysis
+    - [X] Homogeneous Precinct Analysis
 
 - [X] Simplify AL_PL94 dataset to be under 100MB
 
+- [] pip packages
+    - [] Vote Power Indexes
+    - [] Precinct Analysises
+
+- [] QGIS package
+    - [] expermental flag
+    - [] production flag
+    - [] registraied with OSWG
+
+- [] Wiki
 

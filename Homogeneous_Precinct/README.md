@@ -3,6 +3,4 @@
 
 - [] pip packages
 
-- [] QGIS plug-in
-
 - [] Explainer for Homogeneous Precinct Analysis
