@@ -4,6 +4,8 @@
 *.dbf
 *.txt
 *.xml
+*.png
+*.jpeg
 !BAF-al_2020.csv
 !AL_94_WC_7.csv
 !AL_94_WC_6.csv

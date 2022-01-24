@@ -20,8 +20,6 @@ import math
 import collections 
 import logging
 
-logging.basicConfig(filename='power_index_debug.txt', level=logging.DEBUG, format=' %(asctime) - %(levelname)s - %(message)s')
-
 
 def block_classification(df, TotalPopCol, TargetPopCol, Party1, Party2):
     df['Target_Percentage'] = df[TargetPopCol]/df[TotalPopCol]
