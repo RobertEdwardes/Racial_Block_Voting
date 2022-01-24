@@ -3,14 +3,11 @@ Compute voter power index for 2 party vote using either Banzhaf or Shapley–Shu
 
 Usage:
 --------------
-INPUT: Dataframe and Schema
-    Schema: JSON/Dict mapping of columns to Schema template 
-    DataFrame: 5 columns following Schema JSON idx,Pop_a,Pop_B,Party_1,Party_2
+INPUT: Dataframe 
+    DataFrame: 5 columns (df, TotalPopCol, TargetPopCol, Party1, Party2, vIndex=None, filename=None)
 
-PARAMETERS: Schema, Index, Init
-    Schema: Dict like obj that maps Dataframe to Template
-    Index: Either/Both Banzhaf for (Banzhaf Power Index)  and Shubik for (Shapley–Shubik index)
-    Init: One(1) or more dataframes in a list
+PARAMETERS: Index, df or list of dfs
+    Index: Either/Both bpi for (Banzhaf Power Index)  and ssi for (Shapley–Shubik index)
 
 OUTPUT:
     Default: {Index-Type}.csv 
@@ -23,20 +20,11 @@ import math
 import collections 
 import logging
 
-logging.basicConfig(filename='power_index_debug.txt' level=logging.DEBUG, format=' %(asctime) - %(levelname)s - %(message)s')
-
-def template:
-
-    template = {'(REPLACE WITH Index/Precinct column Name)':'idx',
-                '(REPLACE WITH White/Majority Population column Name)':'Base_Pop', 
-                '(REPLACE WITH Target/Minority Population column Name)':'Target_Pop',
-                '(REPLACE WITH Party A Vote column Name)':'Party_A',
-                '(REPLACE WITH Party A Vote column Name)': 'Party_B'}
-    return template
+logging.basicConfig(filename='power_index_debug.txt', level=logging.DEBUG, format=' %(asctime) - %(levelname)s - %(message)s')
 
 
-def block_classification(df):
-    df['Target_Percentage'] = df['Target_Pop']/df['Base_Pop']
+def block_classification(df, TotalPopCol, TargetPopCol, Party1, Party2):
+    df['Target_Percentage'] = df[TargetPopCol]/df[TotalPopCol]
     df['Group'] = None
     df = df.reset_index(drop=True)
 
@@ -51,14 +39,14 @@ def block_classification(df):
             df['Group'].iloc[i] = 'O60%'
         if row['Target_Percentage'] <= .1:
             df['Group'].iloc[i] = 'O90%'
-    quoat = df[['Party_A','Party_B']].sum()
-    quoat = (quoat['Party_B'] + quoat['Party_A'])/2
-    voteGroups = df[['Group','Party_B']].groupby('Group').sum().reset_index()
+    quoat = df[[Party1,Party2]].sum()
+    quoat = (quoat[Party2] + quoat[Party1])/2
+    voteGroups = df[['Group',Party2]].groupby('Group').sum().reset_index()
     voteGroups = voteGroups.values.tolist()
     return voteGroups, quoat
 
 
-def bpi(group, quoat):
+def bpi(group, quoat, filename):
     idx = 0
     output = {}
     for i in range(1,len(group)+1):
@@ -87,8 +75,8 @@ def bpi(group, quoat):
     else:
         df_share.to_csv(f'{filename}-Banzhaf-Power.csv',index=False)
 
-def ssi(group, quoat):
-    output = {'B90%':0,'B60%':0,'W90%':0,'W60%':0,'N50%':0}
+def ssi(group, quoat, filename):
+    output = {'T90%':0,'T60%':0,'O90%':0,'O60%':0,'N50%':0}
     for i in itertools.permutations(group):
         c = 0
         for j in i:
@@ -104,24 +92,11 @@ def ssi(group, quoat):
     else:
         df_share.to_csv(f'{filename}-Shapley–Shubik.csv',index=False)
 
-def power_index(schema, index=None, filename=None, , init*,):
-    if len(init) < 1 or schema is None:
-            Exception raise('Missing Dataframe or Schema')
-    if not isinstance(init, list):
-        df_init = []
-        df_init.append(df)
-    else:
-        df_init = init
-    for df in df_init:
-        if len(df.index) < 2:
-            Exception raise('Dataframe needs 2 or more rows to compare')
-        if len(df.column) != 5:
-            Exception raise('Too few or many columns must be five(5) use template as guide')
-        if collections.Counter(df.columns) != collections.Counter(list(schema.keys())):
-            Exception raise('Schema does not match Dataframe columns call PACKAGE_NAME.template for example.')
-        df = df.rename(columns=schema)
-        group, quoat = block_classification(df)
-        if index is None or index == 'Banzhaf':
-            bpi(group, quoat, filename)
-        if index is None or index == 'Shubik':
-            ssi(group, quoat ,filename)
+def power_index(df, TotalPopCol, TargetPopCol, Party1, Party2, vIndex=None, filename=None):
+    if len(df.index) < 2:
+        raise Exception('Dataframe needs 2 or more rows to compare')
+    group, quoat = block_classification(df, TotalPopCol, TargetPopCol, Party1, Party2)
+    if vIndex is None or vIndex == 'bpi':
+        bpi(group, quoat, filename)
+    if vIndex is None or vIndex == 'ssi':
+        ssi(group, quoat ,filename)

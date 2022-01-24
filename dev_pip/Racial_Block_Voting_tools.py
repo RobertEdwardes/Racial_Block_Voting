@@ -15,11 +15,11 @@ OUTPUT:
 import pandas as pd
 import logging
 
-logging.basicConfig(filename='power_index_debug.txt' level=logging.DEBUG, format=' %(asctime) - %(levelname)s - %(message)s')
+logging.basicConfig(filename='power_index_debug.txt', level=logging.DEBUG, format=' %(asctime) - %(levelname)s - %(message)s')
 
-def Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2):
-    df['Minority_Percentage'] = df[MinorityPopCol]/df[TotalPopCol]
-    df['Majority_Percentage'] = df[MajorityPopCol]/df[TotalPopCol]
+def Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol,  Party1, Party2):
+    df['Minority_Percentage'] = df[MinorityPopCol]/(df[Party2] + df[Party1])
+    df['Majority_Percentage'] = df[MajorityPopCol]/(df[Party2] + df[Party1])
     df['Group'] = None
     df = df.reset_index(drop=True)
 
@@ -49,35 +49,34 @@ def Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, TotalPopCol, P
     df_out.to_csv('Homogeneous_Precinct.csv',idex=False)
 
 
-def Ecological_Regression(df, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2):
+def Ecological_Regression(df, MajorityPopCol, MinorityPopCol, Party1, Party2):
     df['Target_Percentage'] = df[MinorityPopCol]/df[TotTotalPopColPop]
     df['Vote_Percentage'] = df[Party1]/(df[Party2] + df[Party1])
     x = df[['Vote_Percentage']]
     y = df['Target_Percentage']
     x = sm.add_constant(x)
     model = sm.OLS(y, x).fit()
-    model.save('er_summary.txt', remove_data=False)¶
-    with open('er_summary.txt', mode='a')
+    model.save('er_summary.txt', remove_data=False)
     fig = plt.figure(figsize=(12,8))
     fig = sm.graphics.plot_regress_exog(model, 'Vote_Percentage', fig=fig)
     fig.savefig('regress_plot.png')
     res = model.resid
     fig = sm.qqplot(res, fit=True, line="45")
-    plt.savefig('qqplot.png')
+    fig.savefig('qqplot.png')
 
-def rpv_tools(df, idx = None, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2, method=None):
+def rpv_tools(df, MajorityPopCol, MinorityPopCol, Party1, Party2, method=None, idx = None):
     if len(df.index) < 2:
-        Exception raise('Dataframe needs 2 or more rows to compare')
+        raise Exception('Dataframe needs 2 or more rows to compare')
 
-    if method = 'hr' and idx is None:
-        Exception raise('Precincts or Index need for Homogeneous Precinct')
+    if method == 'hr' and idx is None:
+        raise Exception('Precincts/Index need for Homogeneous Precinct')
 
     if method is None and idx is not None:
-        Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2)
-        Ecological_Regression(df, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2)
-    elif: method = 'er':
-        Ecological_Regression(df, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2)
-    elif: method = 'hr':
-        Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2)
+        Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, Party1, Party2)
+        Ecological_Regression(df, MajorityPopCol, MinorityPopCol,  Party1, Party2)
+    elif method == 'er':
+        Ecological_Regression(df, MajorityPopCol, MinorityPopCol, Party1, Party2)
+    elif method == 'hr':
+        Homogeneous_Precinct(df, idx, MajorityPopCol, MinorityPopCol, Party1, Party2)
     else:
-        Ecological_Regression(df, MajorityPopCol, MinorityPopCol, TotalPopCol, Party1, Party2)
+        Ecological_Regression(df, MajorityPopCol, MinorityPopCol, Party1, Party2)
