@@ -7,13 +7,17 @@ INPUT: Dataframe and Schema
     Schema: JSON/Dict mapping of columns to Schema template 
     DataFrame: 5 columns following Schema JSON idx,Pop_a,Pop_B,Party_1,Party_2
 
-PARAMETERS: Dataframes, Schema, Power Index
-    Dataframes: One(1) or more dataframes in a list
+PARAMETERS: Schema, Index, Init
+    Schema: Dict like obj that maps Dataframe to Template
+    Index: Either/Both Banzhaf for (Banzhaf Power Index)  and Shubik for (Shapley–Shubik index)
+    Init: One(1) or more dataframes in a list
 
+OUTPUT:
+    Default: {Index-Type}.csv 
+        option: filename = {filename}-{Index-Type}.csv
 
 '''
 import pandas as pd
-import os 
 import itertools
 import math
 import collections 
@@ -24,11 +28,10 @@ logging.basicConfig(filename='power_index_debug.txt' level=logging.DEBUG, format
 def template:
 
     template = {'(REPLACE WITH Index/Precinct column Name)':'idx',
-                '(REPLACE WITH White/Base Population column Name)':'Base_Pop', 
-                '(REPLACE WITH Target Population column Name)':'Target_Pop',
+                '(REPLACE WITH White/Majority Population column Name)':'Base_Pop', 
+                '(REPLACE WITH Target/Minority Population column Name)':'Target_Pop',
                 '(REPLACE WITH Party A Vote column Name)':'Party_A',
                 '(REPLACE WITH Party A Vote column Name)': 'Party_B'}
-
     return template
 
 
@@ -76,15 +79,17 @@ def bpi(group, quoat):
             if wC - i[1] < quoat:
                 crit_count[i[0]] += 1
     df_share = pd.DataFrame(list(crit_count.items()),columns = ['Cat','T_Index'])
-    B_IdxSum = df_share['T_Index'].sum()
-    df_share['T_PowerShare'] = (df_share['T_Index']/B_IdxSum) * 100
+    T_IdxSum = df_share['T_Index'].sum()
+    df_share['T_PowerShare'] = (df_share['T_Index']/T_IdxSum) * 100
     df_share['T_Critical_Vote'] = (df_share['T_Index']/(2**(5-1)))*100
-    # NEEDS OUTPUT 
-
+    if filename is None:
+        df_share.to_csv(f'Banzhaf-Power.csv',index=False)
+    else:
+        df_share.to_csv(f'{filename}-Banzhaf-Power.csv',index=False)
 
 def ssi(group, quoat):
     output = {'B90%':0,'B60%':0,'W90%':0,'W60%':0,'N50%':0}
-    for i in itertools.permutations(voteGroups):
+    for i in itertools.permutations(group):
         c = 0
         for j in i:
             c += j[1]
@@ -94,13 +99,16 @@ def ssi(group, quoat):
     df_share = pd.DataFrame(list(output.items()),columns = ['Cat','T_Count'])
     factorial = math.factorial(len(output.keys()))
     df_share['T_Index'] = df_share['T_Count']/factorial
-    # NEEDS OUTPUT 
+    if filename is None:
+        df_share.to_csv(f'Shapley–Shubik.csv',index=False)
+    else:
+        df_share.to_csv(f'{filename}-Shapley–Shubik.csv',index=False)
 
-
-def power_index(schema, index=None, init*):
+def power_index(schema, index=None, filename=None, , init*,):
     if len(init) < 1 or schema is None:
             Exception raise('Missing Dataframe or Schema')
-    if len(init) == 1:
+    if not isinstance(init, list):
+        df_init = []
         df_init.append(df)
     else:
         df_init = init
@@ -114,6 +122,6 @@ def power_index(schema, index=None, init*):
         df = df.rename(columns=schema)
         group, quoat = block_classification(df)
         if index is None or index == 'Banzhaf':
-            bpi(group, quoat)
+            bpi(group, quoat, filename)
         if index is None or index == 'Shubik':
-            ssi(group, quoat)
+            ssi(group, quoat ,filename)
