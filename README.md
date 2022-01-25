@@ -29,8 +29,11 @@ The Banzhaf Power Index of an agent is the number of winning coalitions that the
 ##  Vote Dilution Analysis Methods
 
 ### Homogeneous Precinct
+Method to estimat voting behavior by race/ethnicity is to compare voting patterns in “homogeneous precincts” – that is, election precincts that are composed of a single racial/ethnic group.
 
 ### Ecological Regression
+Method to estimate the voting patterns by race/ethnicity can be 
+produced even when there are no homogeneous precincts.
 
 ##### Why Not Ecological Inference
 Part of upcoming wiki
@@ -47,7 +50,7 @@ Part of upcoming wiki
 - [] pip packages
     - [X] work in progress
     - [] Vote Power Indexes [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes) 
-    - [] Precinct Analysises [Github Package URL]
+    - [] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools)
 
 - [] QGIS package
     - [] [Github Plug-in URL]
