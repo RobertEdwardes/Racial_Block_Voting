@@ -3,6 +3,5 @@
     - [X] Shapley-Shubik
     - [X] Banzhaf Power
 
-- [] pip package
-
-- [] Explainer for Indexes
+- [] pip package [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes)  
+- [X] Explainer for Indexes
