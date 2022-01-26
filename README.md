@@ -47,10 +47,10 @@ Part of upcoming wiki
 
 - [X] Simplify AL_PL94 dataset to be under 100MB
 
-- [] pip packages
+- [X] pip packages
     - [X] work in progress
-    - [] Vote Power Indexes [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes) 
-    - [] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools)
+    - [X] Vote Power Indexes [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes) / [Package](https://test.pypi.org/project/rpvVoterIndex/0.1.1/)
+    - [X] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools) / [Package](https://test.pypi.org/project/Racial-Polarized-Voting-Tools/0.1.0/)
 
 - [] QGIS package
     - [] [Github Plug-in URL]
