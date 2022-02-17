@@ -49,8 +49,9 @@ Part of upcoming wiki
 
 - [X] pip packages
     - [X] work in progress
-    - [X] Vote Power Indexes [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes) / [Package](https://test.pypi.org/project/rpvVoterIndex/0.1.1/)
-    - [X] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools) / [Package](https://test.pypi.org/project/Racial-Polarized-Voting-Tools/0.1.0/)
+    - [X] Vote Power Indexes [Github Package URL](https://github.com/RobertEdwardes/Vote_Power_Indexes) / [Package](https://pypi.org/project/rpvVoterIndex/0.1.1/)
+    - [X] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools) / [Package](https://pypi.org/project/Racial-Polarized-Voting-Tools/0.1.0/)
+    - [X] done 
 
 - [] QGIS package
     - [] [Github Plug-in URL]
@@ -59,4 +60,3 @@ Part of upcoming wiki
     - [] registraied with OSWG
 
 - [] Wiki
-
