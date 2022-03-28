@@ -53,10 +53,4 @@ Part of upcoming wiki
     - [X] Precinct Analysises [Github Package URL](https://github.com/RobertEdwardes/Racial_Polarized_Voting_Tools) / [Package](https://pypi.org/project/Racial-Polarized-Voting-Tools/0.1.0/)
     - [X] done 
 
-- [] QGIS package
-    - [] [Github Plug-in URL]
-    - [] expermental flag
-    - [] production flag
-    - [] registraied with OSWG
-
 - [] Wiki
